@@ -66,7 +66,11 @@ def verify_password(username_or_token, password):
     g.user = user
     return True
 
-@app.route('/api/register', methods=['POST'])
+@app.route('/', methods=['get'])
+def heartbeat():
+    return (jsonify({'serverStatus': 'alive'}), 200)
+
+@app.route('/user/register', methods=['POST'])
 def register():
     username = request.json.get('username') 
     password = request.json.get('password')
@@ -89,7 +93,7 @@ def register():
     return (jsonify({'username': user.username}), 201)
 
 
-@app.route('/api/login')
+@app.route('/user/login')
 @auth.login_required
 def get_token():
     token = g.user.generate_auth_token(600)
